@@ -5,7 +5,7 @@
 2. **Missing ID GET behavior:** Requesting `/api/products/9999` returned an unhandled exception stack trace (500 error) or an empty 200 response.
 
 ## Part 1 Checkpoint: Validation Response (400 Bad Request)
-json
+```json
 {
   "type": "[https://tools.ietf.org/html/rfc9110#section-15.5.1](https://tools.ietf.org/html/rfc9110#section-15.5.1)",
   "title": "One or more validation errors occurred.",
@@ -15,6 +15,8 @@ json
     "Price": ["Price must be greater than zero."]
   }
 }
+```
+
 Part 2 Checkpoint: Custom Rule
 Rule implemented: Cross-property check ensuring SalePrice is strictly less than Price, and SKU uniqueness verification via service logic.
 
@@ -23,7 +25,7 @@ Message returned: "Sale price must be less than the regular price."
 Part 3 Checkpoint: Global Exception Handling
 404 Problem Details Body:
 
-JSON
+```JSON
 {
   "type": "[https://tools.ietf.org/html/rfc9110#section-15.4.5](https://tools.ietf.org/html/rfc9110#section-15.4.5)",
   "title": "Resource Not Found",
@@ -31,6 +33,7 @@ JSON
   "detail": "Product with ID 9999 was not found.",
   "instance": "/api/products/9999"
 }
+```
 Server Log Match: [Error] GlobalExceptionHandler: An unhandled exception occurred: Product with ID 9999 was not found.
 
 Part 4 Checkpoint: Standardized Responses
@@ -40,7 +43,7 @@ Part 4 Checkpoint: Standardized Responses
 
 Paged List Envelope:
 
-JSON
+```JSON
 {
   "data": [
     { "id": 1, "name": "Mechanical Keyboard", "sku": "KB001", "price": 1500 }
@@ -52,7 +55,7 @@ JSON
     "totalPages": 1
   }
 }
-
+```
 Reflection
 
 Input validation prevents invalid product data from entering the application. Custom validation and domain exceptions enforce business rules and clearly identify missing resources or conflicts. Centralized exception handling converts exceptions into consistent HTTP responses while keeping internal details in server logs. Standard status codes, Problem Details, and pagination make the API easier for clients to use and troubleshoot. Together, these practices improve the reliability, security, and maintainability of the API.
